@@ -1,0 +1,7 @@
+BUILD.* text eol=lf
+COPYING text eol=lf
+INSTALL.* text eol=lf
+Makefile.* text eol=lf
+README.md text eol=lf
+*.c text eol=lf
+*.def text eol=lf

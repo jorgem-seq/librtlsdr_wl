@@ -1,0 +1,27 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+
+MODULE    = rtlsdr
+DLL       = $(MODULE).dll
+EXPDEF    = src/$(MODULE).def
+SRC       = src/dllmain.c
+OBJ       = src/dllmain.o
+
+CC        = winegcc
+CPPFLAGS  = -D_REENTRANT -D__WINESRC__
+CFLAGS    = -O2 -Wall -Wextra -fPIC -m32 -shared -s
+CFLAGS   += -Wb,-m32,--external-symbols
+LDFLAGS   = -l:librtlsdr.a -l:libusb-1.0.a -lpthread -ludev
+MV        = mv
+RM        = rm -f
+
+all: $(MODULE)
+
+$(MODULE): $(OBJ)
+	$(CC) $(CFLAGS) -o $(MODULE) $(OBJ) $(LDFLAGS) $(EXPDEF)
+	$(MV) $(DLL).so $(DLL)
+
+$(OBJ): $(SRC)
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c $(SRC) -o $(OBJ)
+
+clean:
+	${RM} $(DLL) $(OBJ)

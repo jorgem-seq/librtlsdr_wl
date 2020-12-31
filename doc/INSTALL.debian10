@@ -1,0 +1,25 @@
+Install rtl-sdr.rules and block kernel modules from loading
+$ sudo cp rtl-sdr.rules /etc/udev/rules.d/
+$ sudo udevadm control --reload-rules
+$ sudo udevadm trigger --attr-match=subsystem=usb
+$ sudo bash -c 'cat > /etc/modprobe.d/rtl-sdr-blacklist.conf << EOF
+blacklist dvb-usb-rtl28xxu
+blacklist rtl2832
+blacklist rtl2832_sdr
+blacklist e4000
+blacklist fc0011
+blacklist fc0012
+blacklist fc0013
+blacklist fc2580
+blacklist r820t
+blacklist tua9001
+EOF'
+
+Installing wine32 on x86_64
+$ sudo dpkg --add-architecture i386
+$ sudo apt update
+$ sudo apt install ttf-mscorefonts-installer wine32-development
+$ WINEARCH=win32 winecfg
+
+Copy x86/rtlsdr.dll to the application directory and run:
+$ wine application.exe

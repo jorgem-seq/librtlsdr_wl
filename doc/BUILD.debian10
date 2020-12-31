@@ -1,0 +1,31 @@
+This guide does not cover how to setup a 32-bit VM or LXC.
+
+Install GCC and libs
+$ sudo apt -y install autoconf build-essential cmake gcc-multilib git libtool \
+  libudev-dev libwine-development-dev pkgconf wget
+
+Install libusb
+$ wget https://github.com/libusb/libusb/archive/v1.0.24.tar.gz -O libusb-1.0.24.tar.gz
+$ tar -xzf libusb-1.0.24.tar.gz
+$ cd libusb-1.0.24
+$ ./autogen.sh
+$ ./configure --disable-log --with-pic --prefix=/usr --libdir=/usr/lib/$(gcc -print-multiarch)
+$ make
+$ sudo make install
+$ sudo ldconfig
+$ cd ..
+
+Install librtlsdr
+$ git clone --depth 1 git://git.osmocom.org/rtl-sdr.git librtlsdr
+$ cd librtlsdr
+$ mkdir build
+$ cd build
+$ cmake ../ -DCMAKE_POSITION_INDEPENDENT_CODE=TRUE -DCMAKE_INSTALL_PREFIX=/usr \
+	    -DCMAKE_INSTALL_LIBDIR=/usr/lib/$(gcc -print-multiarch)
+$ make
+$ sudo make install
+$ sudo ldconfig
+$ cd ../..
+
+Build rtlsdr.dll
+$ make -f Makefile.wine32
